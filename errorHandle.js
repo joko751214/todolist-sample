@@ -1,9 +1,9 @@
-function errorHandle(res, headers) {
+function errorHandle(res, headers, message) {
   res.writeHead(400, headers);
   res.write(
     JSON.stringify({
       status: "false",
-      message: "格式錯誤",
+      message,
     })
   );
   res.end();

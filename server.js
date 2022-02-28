@@ -43,10 +43,10 @@ const requestListener = (req, res) => {
           );
           res.end();
         } else {
-          errorHandle(res, headers);
+          errorHandle(res, headers, "缺少 title 屬性");
         }
       } catch (err) {
-        errorHandle(res, headers);
+        errorHandle(res, headers, "格式錯誤");
       }
     });
   } else if (req.url === "/todos" && req.method === "DELETE") {
@@ -73,7 +73,7 @@ const requestListener = (req, res) => {
       );
       res.end();
     } else {
-      errorHandle(res, headers);
+      errorHandle(res, headers, "id 不存在");
     }
   } else if (req.url.startsWith("/todos/") && req.method === "PATCH") {
     req.on("end", () => {
@@ -92,12 +92,15 @@ const requestListener = (req, res) => {
           );
           res.end();
         } else {
-          errorHandle(res, headers);
+          errorHandle(res, headers, "缺少 title 屬性，或是 id 不存在");
         }
       } catch (err) {
-        errorHandle(res, headers);
+        errorHandle(res, headers, "格式錯誤");
       }
     });
+  } else if (req.method == "OPTIONS") {
+    res.writeHead(200, headers);
+    res.end();
   } else {
     res.writeHead(404, headers);
     res.write(

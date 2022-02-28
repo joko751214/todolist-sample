@@ -1,0 +1,124 @@
+{
+	"info": {
+		"_postman_id": "8981288d-2a8c-41fe-bbcb-f8bf4bb833ef",
+		"name": "todolist - heroku",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "取得所有代辦事項",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://stark-wave-02315.herokuapp.com/todos",
+					"protocol": "https",
+					"host": [
+						"stark-wave-02315",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "新增單筆代辦事項",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"大家早上好3\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://stark-wave-02315.herokuapp.com/todos",
+					"protocol": "https",
+					"host": [
+						"stark-wave-02315",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "刪除所有待辦事項",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://stark-wave-02315.herokuapp.com/todos",
+					"protocol": "https",
+					"host": [
+						"stark-wave-02315",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todos"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "刪除單筆待辦事項",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://stark-wave-02315.herokuapp.com/todos/faa2e517-6003-46d1-af6a-0de84b710493",
+					"protocol": "https",
+					"host": [
+						"stark-wave-02315",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todos",
+						"faa2e517-6003-46d1-af6a-0de84b710493"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "編輯單筆待辦事項",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"title\": \"編輯完成4\"\r\n}"
+				},
+				"url": {
+					"raw": "https://stark-wave-02315.herokuapp.com/todos/e04d026c-744f-42f9-a902-5b8f85e5df5f",
+					"protocol": "https",
+					"host": [
+						"stark-wave-02315",
+						"herokuapp",
+						"com"
+					],
+					"path": [
+						"todos",
+						"e04d026c-744f-42f9-a902-5b8f85e5df5f"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

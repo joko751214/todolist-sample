@@ -1,6 +1,7 @@
 const http = require("http");
 const { v4: uuidv4 } = require("uuid");
-const errorHandle = require("./errorHandle");
+const errHandle = require("./errHandle");
+const successHandle = require("./successHandle");
 const todos = [];
 
 const headers = {
@@ -17,14 +18,7 @@ const requestListener = (req, res) => {
     body += chunk;
   });
   if (req.url === "/todos" && req.method === "GET") {
-    res.writeHead(200, headers);
-    res.write(
-      JSON.stringify({
-        status: "success",
-        data: todos,
-      })
-    );
-    res.end();
+    successHandle(res, headers, todos);
   } else if (req.url === "/todos" && req.method === "POST") {
     req.on("end", () => {
       try {
@@ -34,46 +28,25 @@ const requestListener = (req, res) => {
             title,
             id: uuidv4(),
           });
-          res.writeHead(200, headers);
-          res.write(
-            JSON.stringify({
-              status: "success",
-              data: todos,
-            })
-          );
-          res.end();
+          successHandle(res, headers, todos);
         } else {
-          errorHandle(res, headers, "缺少 title 屬性");
+          errHandle(res, headers, "缺少 title 屬性");
         }
       } catch (err) {
-        errorHandle(res, headers, "格式錯誤");
+        errHandle(res, headers, "格式錯誤");
       }
     });
   } else if (req.url === "/todos" && req.method === "DELETE") {
     todos.length = 0;
-    res.writeHead(200, headers);
-    res.write(
-      JSON.stringify({
-        status: "success",
-        data: todos,
-      })
-    );
-    res.end();
+    successHandle(res, headers, todos);
   } else if (req.url.startsWith("/todos/") && req.method === "DELETE") {
     const id = req.url.split("/").pop();
     const index = todos.findIndex((el) => el.id === id);
     if (index !== -1) {
       todos.splice(index, 1);
-      res.writeHead(200, headers);
-      res.write(
-        JSON.stringify({
-          status: "success",
-          data: todos,
-        })
-      );
-      res.end();
+      successHandle(res, headers, todos);
     } else {
-      errorHandle(res, headers, "id 不存在");
+      errHandle(res, headers, "id 不存在");
     }
   } else if (req.url.startsWith("/todos/") && req.method === "PATCH") {
     req.on("end", () => {
@@ -83,33 +56,19 @@ const requestListener = (req, res) => {
         const index = todos.findIndex((el) => el.id === id);
         if (title !== undefined && index !== -1) {
           todos[index].title = title;
-          res.writeHead(200, headers);
-          res.write(
-            JSON.stringify({
-              status: "success",
-              data: todos,
-            })
-          );
-          res.end();
+          successHandle(res, headers, todos);
         } else {
-          errorHandle(res, headers, "缺少 title 屬性，或是 id 不存在");
+          errHandle(res, headers, "缺少 title 屬性，或是 id 不存在");
         }
       } catch (err) {
-        errorHandle(res, headers, "格式錯誤");
+        errHandle(res, headers, "格式錯誤");
       }
     });
-  } else if (req.method == "OPTIONS") {
+  } else if (req.method === "OPTION") {
     res.writeHead(200, headers);
     res.end();
   } else {
-    res.writeHead(404, headers);
-    res.write(
-      JSON.stringify({
-        status: "success",
-        message: "路由錯誤",
-      })
-    );
-    res.end();
+    errHandle(res, headers, "路由錯誤");
   }
 };
 

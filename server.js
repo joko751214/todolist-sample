@@ -1,6 +1,6 @@
 const http = require("http");
 const { v4: uuidv4 } = require("uuid");
-const errHandle = require("./errHandle");
+const errorHandle = require("./errorHandle");
 const successHandle = require("./successHandle");
 const todos = [];
 
@@ -30,10 +30,10 @@ const requestListener = (req, res) => {
           });
           successHandle(res, headers, todos);
         } else {
-          errHandle(res, headers, "缺少 title 屬性");
+          errorHandle(res, headers, "缺少 title 屬性");
         }
       } catch (err) {
-        errHandle(res, headers, "格式錯誤");
+        errorHandle(res, headers, "格式錯誤");
       }
     });
   } else if (req.url === "/todos" && req.method === "DELETE") {
@@ -46,7 +46,7 @@ const requestListener = (req, res) => {
       todos.splice(index, 1);
       successHandle(res, headers, todos);
     } else {
-      errHandle(res, headers, "id 不存在");
+      errorHandle(res, headers, "id 不存在");
     }
   } else if (req.url.startsWith("/todos/") && req.method === "PATCH") {
     req.on("end", () => {
@@ -58,17 +58,17 @@ const requestListener = (req, res) => {
           todos[index].title = title;
           successHandle(res, headers, todos);
         } else {
-          errHandle(res, headers, "缺少 title 屬性，或是 id 不存在");
+          errorHandle(res, headers, "缺少 title 屬性，或是 id 不存在");
         }
       } catch (err) {
-        errHandle(res, headers, "格式錯誤");
+        errorHandle(res, headers, "格式錯誤");
       }
     });
   } else if (req.method === "OPTION") {
     res.writeHead(200, headers);
     res.end();
   } else {
-    errHandle(res, headers, "路由錯誤");
+    errorHandle(res, headers, "路由錯誤");
   }
 };
 
